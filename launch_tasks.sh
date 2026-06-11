@@ -5,7 +5,7 @@
 #   bash launch_tasks.sh
 #
 # Sessions:
-#   refine_new_lupus
+#   refine_new_acutemi
 #   refine_lab_hyperkalemia
 #
 # Both sessions share the single A100 (CUDA_VISIBLE_DEVICES=0).
@@ -13,9 +13,9 @@
 # Gemini API calls run in parallel across sessions.
 #
 # Monitor:
-#   tmux attach -t refine_new_lupus
+#   tmux attach -t refine_new_acutemi
 #   tmux attach -t refine_lab_hyperkalemia
-#   tail -f data/logs/new_lupus.log
+#   tail -f data/logs/new_acutemi.log
 #   tail -f data/logs/lab_hyperkalemia.log
 
 set -euo pipefail
@@ -41,15 +41,15 @@ print('[AUTH] Vertex AI ADC OK (project=som-nero-plevriti-deidbdf)')
 mkdir -p "$REPO/data/logs"
 
 # Kill existing sessions with the same name
-for SESSION in refine_new_lupus refine_lab_hyperkalemia; do
+for SESSION in refine_new_acutemi refine_lab_hyperkalemia; do
     tmux kill-session -t "$SESSION" 2>/dev/null && echo "  killed existing session: $SESSION" || true
 done
 
 # ── Launch ─────────────────────────────────────────────────────────────────
-tmux new-session -d -s "refine_new_lupus" \
+tmux new-session -d -s "refine_new_acutemi" \
     "export CUDA_VISIBLE_DEVICES=0; export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True; \
-     bash '${REPO}/run_task_pipeline.sh' new_lupus \
-     2>&1 | tee '${REPO}/data/logs/new_lupus.log'"
+     bash '${REPO}/run_task_pipeline.sh' new_acutemi \
+     2>&1 | tee '${REPO}/data/logs/new_acutemi.log'"
 
 tmux new-session -d -s "refine_lab_hyperkalemia" \
     "export CUDA_VISIBLE_DEVICES=0; export PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True; \
@@ -58,11 +58,11 @@ tmux new-session -d -s "refine_lab_hyperkalemia" \
 
 echo ""
 echo "Started sessions:"
-echo "  tmux attach -t refine_new_lupus"
+echo "  tmux attach -t refine_new_acutemi"
 echo "  tmux attach -t refine_lab_hyperkalemia"
 echo ""
 echo "Monitor logs:"
-echo "  tail -f ${REPO}/data/logs/new_lupus.log"
+echo "  tail -f ${REPO}/data/logs/new_acutemi.log"
 echo "  tail -f ${REPO}/data/logs/lab_hyperkalemia.log"
 echo ""
 echo "Note: both sessions share GPU 0 via /tmp/refine_gpu.lock."

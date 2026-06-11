@@ -80,7 +80,7 @@ results_vol = modal.Volume.from_name("refine-rollout-results", create_if_missing
 
 app = modal.App("refine-exhaustive-rollout")
 
-TASKS = ["guo_readmission", "guo_los", "new_lupus", "lab_hyperkalemia"]
+TASKS = ["guo_readmission", "guo_los", "new_acutemi", "lab_hyperkalemia"]
 
 
 # ── Remote function ────────────────────────────────────────────────────────────

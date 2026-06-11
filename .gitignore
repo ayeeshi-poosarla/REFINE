@@ -1,5 +1,6 @@
 # Generated data
 data/
+misc/
 
 # Generated parser and featurizer scripts (LLM-generated, task-specific)
 03_globalrubric/auto_parsers/
